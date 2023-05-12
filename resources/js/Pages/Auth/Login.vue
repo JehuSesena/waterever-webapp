@@ -32,6 +32,7 @@ const submit = () => {
 <template>
     <Head title="Log in" />
 
+    
     <AuthenticationCard class="bg-slate-900">
         <template #logo>
             <img class="mx-auto h-32 w-auto" src="../../../../public/img/logo.png" alt="">
