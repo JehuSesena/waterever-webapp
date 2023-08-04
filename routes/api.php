@@ -29,4 +29,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/logout', [AuthController::class, 'logout']);
 
+    Route::post('/session-time-logs', [SessionTimeLogController::class, 'store']);
+
 });

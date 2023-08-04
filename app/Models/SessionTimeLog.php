@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class SessionTimeLog extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'start_time',
+        'end_time',
+        'duration', // Duración en segundos
+    ];
 }
