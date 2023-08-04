@@ -31,4 +31,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/session-time-logs', [SessionTimeLogController::class, 'store']);
 
+    Route::delete('/session-time-logs/{id}', [SessionTimeLogController::class, 'destroy']);
+
 });

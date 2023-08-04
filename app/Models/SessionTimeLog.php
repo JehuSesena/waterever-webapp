@@ -15,4 +15,10 @@ class SessionTimeLog extends Model
         'end_time',
         'duration', // Duración en segundos
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
 }

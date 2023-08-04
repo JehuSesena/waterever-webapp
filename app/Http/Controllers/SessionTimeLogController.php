@@ -6,6 +6,7 @@ use App\Models\SessionTimeLog;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Http\Livewire;
 
 class SessionTimeLogController extends Controller
 {
@@ -74,10 +75,10 @@ class SessionTimeLogController extends Controller
             'duration' => $durationInSeconds, // Almacena la duración en segundos
         ]);
 
-        // si todo ha ido bien, se devuelve un mensaje de éxito
         return response()->json([
             'message' => 'Session time metric was successfully created.'
         ], 201);
+
     }
 
     /**
@@ -114,14 +115,29 @@ class SessionTimeLogController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\SessionTimeLog  $sessionTimeLog
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(SessionTimeLog $sessionTimeLog)
+    public function destroy($id)
     {
-        //
+        // Buscar el registro por su ID y lanzar una excepción si no se encuentra
+        try {
+            $sessionTimeLog = SessionTimeLog::findOrFail($id);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Session time metric not found.'
+            ], 404);
+        }
+    
+        // Verificar si el usuario autenticado es el propietario del registro
+        if (!Auth::guard('sanctum')->check() || Auth::guard('sanctum')->user()->id !== $sessionTimeLog->user_id) {
+            return response()->json([
+                'message' => 'Unauthorized'
+            ], 401);
+        }
+    
+        // Eliminar el registro de la base de datos
+        $sessionTimeLog->delete();
+    
+        return response()->json([
+            'message' => 'Session time metric was successfully deleted.'
+        ], 200);
     }
 }
